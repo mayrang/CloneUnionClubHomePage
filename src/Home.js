@@ -1,9 +1,12 @@
 import clubList from "./utils/ClubList";
 import SlideBorder from "./componants/SlideBorder";
+import Footer from "./componants/Footer";
+import Header from "./componants/Header";
 
 const Home = () => {
     return(
     <>
+    <Header />
     <div className="index-introduce-union">
         <div className="index-introduce-union-img">
             <img src={process.env.PUBLIC_URL + "/images/groupPhoto.jpeg"} alt="error" />
@@ -22,6 +25,7 @@ const Home = () => {
             <SlideBorder key={idx} data={it} />
         )}
     </div>
+    <Footer />
     </>
     );
 };
