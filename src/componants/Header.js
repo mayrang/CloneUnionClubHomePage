@@ -52,17 +52,17 @@ const Header = () => {
               <li><a href="UnionClub">총동아리연합회</a></li>
               <li><a onClick={OpenSmallMenu2} href="#!">동아리 소개 <span>▼</span></a>
                 <ul id="SmallMenu2">
-                  <li><a href={"/secondlist/physical"}>체육분과</a></li>
-                  <li><a href={"/secondlist/performance"}>공연분과</a></li>
-                  <li><a href={"/secondlist/art"}>전시/교양분과</a></li>
-                  <li><a href={"/secondlist/volunteer"}>봉사분과</a></li>
-                  <li><a href={"/secondlist/religion"}>종교분과</a></li>
+                  <li><a href={"/list/physical"}>체육분과</a></li>
+                  <li><a href={"/list/performance"}>공연분과</a></li>
+                  <li><a href={"/list/art"}>전시/교양분과</a></li>
+                  <li><a href={"/list/volunteer"}>봉사분과</a></li>
+                  <li><a href={"/list/religion"}>종교분과</a></li>
                 </ul>
               </li>
                 <li><a onClick={OpenSmallMenu1} href="#!">동아리활동<span>▼</span></a>
                   <ul id="SmallMenu1">
-                    <li><a href={"/list/document"}>서류/양식</a></li>
-                    <li><a href={"/list/report"}>동아리 활동보고</a></li>
+                    <li><a href={"/secondlist/document"}>서류/양식</a></li>
+                    <li><a href={"/secondlist/report"}>동아리 활동보고</a></li>
                   
                   </ul>
                 </li>

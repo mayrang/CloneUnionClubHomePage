@@ -56,8 +56,8 @@ function App() {
       <Routes>
         <Route path={"/"} element={<Home />} />
         <Route path={"/UnionClub"} element={<UnionClub />} />
-        <Route path={"/list/:category"} element={<List />} />
         <Route path={"/secondlist/:category"} element={<SecondList />} />
+        <Route path={"/list/:category"} element={<List />} />
         <Route path={"/post/:id"} element={<Post />} />
         <Route path={"/write"} element={<Write />} />
         <Route path={"/edit/:id"} element={<Edit />} />

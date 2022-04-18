@@ -1,4 +1,4 @@
-import clubList from "./utils/ClubList";
+import {clubList} from "./utils/ClubList";
 import SlideBorder from "./componants/SlideBorder";
 import Footer from "./componants/Footer";
 import Header from "./componants/Header";
