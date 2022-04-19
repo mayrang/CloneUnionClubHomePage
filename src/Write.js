@@ -47,7 +47,6 @@ const Write = () => {
         if(textRef.current){
             const size = e.target.dataset.size
             document.execCommand("fontSize", false, size.toString());
-            console.log(textRef.current.focus());
             textRef.current.focus();
         }
         

@@ -5,7 +5,6 @@ import 'swiper/css';
 import { Link} from "react-router-dom";
 
 const SlideBorder = ({data}) => {
-    console.log(1)
     return (
         <div className="slide-border">
             <div className="index-intorduce-club-title">

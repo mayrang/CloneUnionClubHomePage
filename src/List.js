@@ -28,7 +28,7 @@ const List = () => {
             </div>
             <div className="project-cards-container">
                 {clubCategory.list.map((it) => (
-                    <ClubCard  key={it.id} name={it.name} src={it.src} category={category}/>
+                    <ClubCard  key={it.id} data={it} category={category}/>
                 ))}
             </div>
         </div>

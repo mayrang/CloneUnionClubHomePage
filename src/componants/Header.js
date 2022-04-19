@@ -49,7 +49,7 @@ const Header = () => {
           </div>
         <div className="topMenu">
             <ul className="topMenu-ul">
-              <li><a href="UnionClub">총동아리연합회</a></li>
+              <li><a href="/UnionClub">총동아리연합회</a></li>
               <li><a onClick={OpenSmallMenu2} href="#!">동아리 소개 <span>▼</span></a>
                 <ul id="SmallMenu2">
                   <li><a href={"/list/physical"}>체육분과</a></li>

@@ -42,7 +42,7 @@ function App() {
       dispatch({type: "INIT", data: dataList});
       idRef.current = parseInt(dataList[0].id) + 1
     }
-  })
+  }, [])
   const onCreate = useCallback((title, content, category, pwd)=>{
     const newData = {
       id: idRef.current,
@@ -54,7 +54,6 @@ function App() {
     };
     dispatch({type:"CREATE", data:newData});
     idRef.current += 1;
-    console.log(idRef);
   }, []);
 
   const memorizedDispatch = useMemo(() => {
