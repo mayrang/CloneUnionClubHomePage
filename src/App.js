@@ -7,11 +7,13 @@ import UnionClub from './UnionClub';
 import List from './List';
 import SecondList from './SecondList';
 import Home from './Home.js';
-import React, {useMemo, useReducer, useRef, useCallback} from "react";
+import React, {useMemo, useReducer, useRef, useCallback, useEffect} from "react";
 
 const reducer = (state, action) => {
   let newData = [];
   switch(action.type){
+    case "INIT":
+      return action.data;
     case "CREATE":
       newData = [
         action.data,
@@ -32,16 +34,27 @@ export const DataDispatchContext = React.createContext();
 function App() {
   const [data, dispatch] = useReducer(reducer, []);
   const idRef = useRef(1);
-  const onCreate = useCallback((title, content, category)=>{
+
+  useEffect(() => {
+    const localData = localStorage.getItem("data");
+    if(localData){
+      const dataList = JSON.parse(localData).sort((a, b) => parseInt(b.id) - parseInt(a.id));
+      dispatch({type: "INIT", data: dataList});
+      idRef.current = parseInt(dataList[0].id) + 1
+    }
+  })
+  const onCreate = useCallback((title, content, category, pwd)=>{
     const newData = {
       id: idRef.current,
       title, 
       content,
       date: new Date().getTime(),
-      category
+      category,
+      password: pwd
     };
     dispatch({type:"CREATE", data:newData});
     idRef.current += 1;
+    console.log(idRef);
   }, []);
 
   const memorizedDispatch = useMemo(() => {

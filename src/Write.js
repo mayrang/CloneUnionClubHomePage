@@ -7,6 +7,7 @@ const Write = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("#")
+    const [pwd, setPwd] = useState("")
     const [imgBase64, setImgBase64] = useState([]); // 파일 base64
     const [imgFile, setImgFile] = useState(null);	//파일	
     const textRef = useRef(null);
@@ -65,9 +66,13 @@ const Write = () => {
         setCategory(e.target.value);
     }, []);
 
+    const chagngePwd = useCallback((e) => {
+        setPwd(e.target.value);
+    }, []);
+
     const changeTitle = useCallback((e) => {
         setTitle(e.target.value);
-    }, [])
+    }, []);
     const handleSubmit = () => {
         console.log(imgFile)
         if(category === "#"){
@@ -76,7 +81,8 @@ const Write = () => {
             
         }else{
             const content = document.getElementById("editor").innerHTML;
-            onCreate(title, content,category);
+
+            onCreate(title, content,category, pwd);
             navigate("/", {replace: true});
         }
         
@@ -105,6 +111,9 @@ const Write = () => {
                 {/* <select id="clubname" value={}>
                 <option>동아리명</option>
                 </select>  */}
+            </div>
+            <div className="deletePwd">
+                <input className="back-color" id="deletepwd" type="password" placeholder="비밀번호를 입력하시오" value={pwd} onChange={chagngePwd}/>
             </div>
 
 

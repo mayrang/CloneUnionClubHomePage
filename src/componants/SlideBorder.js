@@ -35,4 +35,4 @@ const SlideBorder = ({data}) => {
     )
 }
 
-export default SlideBorder;
+export default React.memo(SlideBorder);
