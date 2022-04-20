@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { DataStateContext } from "./App";
 import PostList from "./componants/PostList";
-import { clubCategoryList } from "./utils/ClubList";
+
 
 const SecondList = () => {
     const data = useContext(DataStateContext);
@@ -21,7 +21,7 @@ const SecondList = () => {
     useEffect(() => {
         setFilteredData(data.filter((it) => it.category === category));
 
-    }, [data])
+    }, [data, category])
     if(filteredData){
         return (
             <>
