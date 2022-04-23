@@ -5,20 +5,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { faList } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { DataStateContext } from "./App";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 const Post = () => {
     const data = useContext(DataStateContext);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const category = searchParams.get("category");
     const [title, setTitle] = useState();
     const [src, setSrc] = useState();
     const [content, setContent] = useState();
     const [categoryName, setCategoryName] = useState();
     const {id} = useParams();
- 
+    const navigate = useNavigate();
+
     useEffect(() => {
         let post = {};
         switch(category){
@@ -94,6 +95,73 @@ const Post = () => {
         }
     }, [data]);
 
+    const handleList = useCallback(() => {
+        if(category === "physical" || category === "art" || category === "volunteer" || category === "performance" || category === "religion"){
+            navigate(`/list/${category}`);
+        }else if(category === "document" || category === "report"){
+            navigate(`/secondlist/${category}`);
+        }else{
+            navigate('/', {replace: true});
+        }
+    }, [category]);
+
+    const handlePrevContent = useCallback(() => {
+        if(category === "document" || category === "report"){
+            const categoryObj = data.filter((it) => it.category === category);
+            const prevContentList = categoryObj.filter((it) => parseInt(it.id) < parseInt(id));
+            if(prevContentList.length > 0){
+                const prevContentId = prevContentList[0].id;
+                navigate(`/post/${prevContentId}?category=${category}`);
+                navigate(0);
+            }else{
+                alert("이전 콘텐츠가 없습니다.");
+                return;
+            }
+        }else if(category === "physical" || category === "art" || category === "volunteer" || category === "performance" || category === "religion"){
+            const categoryObj = clubCategoryList.filter((it) => it.category === category);
+            const prevContentList = categoryObj.filter((it) => parseInt(it.id) < parseInt(id));
+            if(prevContentList){
+                const prevContentId = prevContentList[0].id;
+                navigate(`/post/${prevContentId}?category=${category}`);
+                navigate(0);
+            }else{
+                alert("이전 콘텐츠가 없습니다.");
+                return;
+            }
+        }else{
+            navigate("/", {replace: true});
+        }
+    }, [data]);
+
+
+
+    const handleNextContent = useCallback(() => {
+        if(category === "document" || category === "report"){
+            const categoryObj = data.filter((it) => it.category === category);
+            const nextContentList = categoryObj.filter((it) => parseInt(it.id) > parseInt(id));
+            if(nextContentList.length > 0){
+                const nextContentId = nextContentList[0].id;
+                navigate(`/post/${nextContentId}?category=${category}`);
+                navigate(0);
+            }else{
+                alert("다음 콘텐츠가 없습니다.");
+            }
+        }else if(category === "physical" || category === "art" || category === "volunteer" || category === "performance" || category === "religion"){
+            const categoryObj = clubCategoryList.find((it) => it.category === category);
+            const nextContentList = categoryObj.list.filter((it) => parseInt(it.id) > parseInt(id));
+            if(nextContentList.length > 0){
+                const nextContentId = nextContentList[0].id;
+                navigate(`/post/${nextContentId}?category=${category}`);
+                navigate(0);
+            }else{
+                alert("다음 콘텐츠가 없습니다.");
+            }
+        }else{
+            navigate("/", {replace: true});
+        }
+    }, [data]);
+
+
     if(title){
         return (
             <>
@@ -118,7 +186,7 @@ const Post = () => {
                 </div>
                 <hr/>
                 <div className="content-img">
-                    <img src={src} />
+                    {src && <img src={src} alt="error" />}
                 </div>
                     <div id="contentBody">
                         {content}
@@ -131,15 +199,15 @@ const Post = () => {
                             </button>
                         </div>
                         <div className="post-list-btn">
-                            <button type="button"><FontAwesomeIcon icon={faList} /></button>
+                            <button type="button" onClick={handleList}><FontAwesomeIcon icon={faList} /></button>
                         </div>
                     </div>
                     <div className="other-contents">
-                        <button className="prev-content-button" type="button">
+                        <button className="prev-content-button" type="button" onClick={handlePrevContent}>
                             <span>&lang;</span><h3>Prev Content Title</h3>
                         </button>
-                        <button className="next-content-button" type="button">
-                            <h3>Next Content Title</h3><span>&rnag;</span>
+                        <button className="next-content-button" type="button" onClick={handleNextContent}>
+                            <h3>Next Content Title</h3><span>&rang;</span>
                         </button>
                     </div>
             </div>
