@@ -6,11 +6,12 @@ import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState, useCallback } from "react";
-import { DataStateContext } from "./App";
+import { DataDispatchContext, DataStateContext } from "./App";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 const Post = () => {
     const data = useContext(DataStateContext);
+    const {onRemove} = useContext(DataDispatchContext);
     const [searchParams] = useSearchParams();
     const category = searchParams.get("category");
     const [title, setTitle] = useState();
@@ -21,6 +22,7 @@ const Post = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log(0);
         let post = {};
         switch(category){
             case "physical":
@@ -66,11 +68,16 @@ const Post = () => {
             case "document":
                 if(data.length > 0){
                     post = data.find((it) => parseInt(it.id) === parseInt(id));
-                    setCategoryName("서류/양식");
-                    setTitle(post.title);
-                    setSrc("");
-                    setContent(post.content);
-                    break;
+                    if(post){
+                        setCategoryName("서류/양식");
+                        setTitle(post.title);
+                        setSrc("");
+                        setContent(post.content);
+                        break;
+                    }else{
+                        break;
+                    }
+                    
                 }else{
                     break;
                 }
@@ -78,11 +85,16 @@ const Post = () => {
             case "report":
                 if(data.length > 0){
                     post = data.find((it) => parseInt(it.id) === parseInt(id));
-                    setTitle(post.title);
-                    setCategoryName("동아리 활동보고");
-                    setSrc("");
-                    setContent(post.content);
-                    break;
+                    if(post){
+                        setTitle(post.title);
+                        setCategoryName("동아리 활동보고");
+                        setSrc("");
+                        setContent(post.content);
+                        break;
+                    }else{
+                        break;
+                    }
+                    
                 }else{
                     break;
                 }
@@ -161,6 +173,23 @@ const Post = () => {
         }
     }, [data]);
 
+    const submitRemove = useCallback(() => {
+        if(category === "physical" || category === "art" || category === "volunteer" || category === "performance" || category === "religion"){
+            alert("삭제 권한이 없습니다.");
+            return;
+        }else if(category === "document" || category === "report"){
+            if(window.confirm("정말로 삭제하시겠습니까?")){
+                console.log(1)
+                onRemove(id);
+                console.log(2);
+                navigate(-1, {replace:true});
+            }else{
+                return;
+            } 
+        }
+      
+    }, [])
+
 
     if(title){
         return (
@@ -180,7 +209,7 @@ const Post = () => {
                     <button id="contentEditButton" type="button">
                         <FontAwesomeIcon icon={faEdit} />
                     </button>
-                    <button id="contentDeleteButton">
+                    <button id="contentDeleteButton" onClick={submitRemove}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </button>
                 </div>

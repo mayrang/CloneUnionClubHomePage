@@ -20,6 +20,9 @@ const reducer = (state, action) => {
         ...state
       ]
       break;
+    case "REMOVE":
+      newData = state.filter((it) => parseInt(it.id) !== parseInt(action.id));
+      break;
     default:
       return state;
   }
@@ -56,9 +59,13 @@ function App() {
     idRef.current += 1;
   }, []);
 
+  const onRemove = useCallback((targetId) => {
+    dispatch({type: "REMOVE", id: targetId});
+  }, []);
+
   const memorizedDispatch = useMemo(() => {
-    return {onCreate};
-  }, [onCreate]);
+    return {onCreate, onRemove};
+  }, [onCreate, onRemove]);
   return (
     <DataStateContext.Provider value={data}>
     <DataDispatchContext.Provider value={memorizedDispatch}>
