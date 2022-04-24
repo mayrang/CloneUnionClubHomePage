@@ -42,8 +42,11 @@ function App() {
     const localData = localStorage.getItem("data");
     if(localData){
       const dataList = JSON.parse(localData).sort((a, b) => parseInt(b.id) - parseInt(a.id));
-      dispatch({type: "INIT", data: dataList});
-      idRef.current = parseInt(dataList[0].id) + 1
+      if(dataList.length > 0){
+        dispatch({type: "INIT", data: dataList});
+        idRef.current = parseInt(dataList[0].id) + 1;
+      }
+
     }
   }, [])
   const onCreate = useCallback((title, content, category, pwd)=>{

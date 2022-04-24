@@ -60,8 +60,8 @@ nav {
   border: 1px solid rgba(204, 204, 204, 0.15);
   border-radius: 10px;
   box-sizing: border-box;
+  font-family: 'Malgun Gothic';
 }
-
 /* Set a style for all buttons */
 .modalButton {
   background-color: #525252;
@@ -96,7 +96,7 @@ span.pwd {
 
 /* The Modal (background) */
 .modal {
-  display: block; /* Hidden by default */
+  display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   top: 50%;
@@ -674,6 +674,10 @@ pre {
 
 .deletePwd{
   float: right;
+}
+
+#deletepwd{
+  font-family: 'Malgun Gothic';
 }
 
 .back-color {

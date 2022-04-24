@@ -19,6 +19,7 @@ const Post = () => {
     const [content, setContent] = useState();
     const [categoryName, setCategoryName] = useState();
     const {id} = useParams();
+    const [pwd, setPwd] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -176,24 +177,56 @@ const Post = () => {
     const submitRemove = useCallback(() => {
         if(category === "physical" || category === "art" || category === "volunteer" || category === "performance" || category === "religion"){
             alert("삭제 권한이 없습니다.");
+            document.getElementById("Modal").style.display = 'none';
             return;
         }else if(category === "document" || category === "report"){
-            if(window.confirm("정말로 삭제하시겠습니까?")){
-                console.log(1)
+            const post = data.find((it) => parseInt(it.id) === parseInt(id));
+            console.log(post.password)
+            console.log(pwd)
+            const postPwd = post.password;
+            if(pwd === postPwd){
                 onRemove(id);
-                console.log(2);
                 navigate(-1, {replace:true});
+
             }else{
+                alert("비밀번호 틀림");
+                setPwd("");
                 return;
             } 
         }
       
+    }, [data, pwd]);
+
+    const closeModal = useCallback(() => {
+        document.getElementById("Modal").style.display = 'none';
+    }, []);
+
+    const showModal = useCallback(() => {
+        document.getElementById("Modal").style.display = 'block';
+    }, []);
+
+
+    const onChangePwd = useCallback((e) => {
+        setPwd(e.target.value);
     }, [])
+
+
 
 
     if(title){
         return (
             <>
+
+            <div id="Modal" className="modal">
+                <div className="xcontainer">
+                    <span onClick={closeModal} className="close" title="Close Modal">&times;</span>
+                </div>
+
+                <div className="modalContainer">
+                    <input type="password" className="pwd" placeholder="Enter Password" name="pwd" onChange={onChangePwd} value={pwd} required />
+                <button className="modalButton" onClick={submitRemove}>Login</button>
+                    </div>
+                </div>
             <Header />
             <div className="post">
                 <div className="post-category">
@@ -209,7 +242,7 @@ const Post = () => {
                     <button id="contentEditButton" type="button">
                         <FontAwesomeIcon icon={faEdit} />
                     </button>
-                    <button id="contentDeleteButton" onClick={submitRemove}>
+                    <button id="contentDeleteButton" onClick={showModal}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </button>
                 </div>
