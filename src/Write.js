@@ -4,7 +4,7 @@ import Editor from "./componants/Editor";
 const Write = () => {
     return(
         <>
-        <Editor />
+        <Editor isEdit={false}/>
         </>
     )
 }

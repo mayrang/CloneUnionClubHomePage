@@ -66,7 +66,7 @@ const Header = () => {
                   
                   </ul>
                 </li>
-              <li><a href="<%= process.env.SERVER_HOST %>/meeting" >대표자 회의록</a></li>
+              <li><a href={"/secondlist/meeting"} >대표자 회의록</a></li>
             </ul>
         </div>
       </nav>

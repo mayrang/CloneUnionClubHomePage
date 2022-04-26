@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { faList } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { DataDispatchContext, DataStateContext } from "./App";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
@@ -24,7 +24,6 @@ const Post = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(0);
         let post = {};
         switch(category){
             case "physical":
@@ -100,6 +99,22 @@ const Post = () => {
                 }else{
                     break;
                 }
+                case "meeting":
+                    if(data.length > 0){
+                        post = data.find((it) => parseInt(it.id) === parseInt(id));
+                        if(post){
+                            setTitle(post.title);
+                            setCategoryName("대표자 회의록");
+                            setSrc("");
+                            setContent(post.content);
+                            break;
+                        }else{
+                            break;
+                        }
+                        
+                    }else{
+                        break;
+                    }
                
             default:
                 setTitle("");
@@ -112,7 +127,7 @@ const Post = () => {
     const handleList = useCallback(() => {
         if(category === "physical" || category === "art" || category === "volunteer" || category === "performance" || category === "religion"){
             navigate(`/list/${category}`);
-        }else if(category === "document" || category === "report"){
+        }else if(category === "document" || category === "report" || category === "meeting"){
             navigate(`/secondlist/${category}`);
         }else{
             navigate('/', {replace: true});
@@ -120,7 +135,7 @@ const Post = () => {
     }, [category]);
 
     const handlePrevContent = useCallback(() => {
-        if(category === "document" || category === "report"){
+        if(category === "document" || category === "report" || category === "meeting"){
             const categoryObj = data.filter((it) => it.category === category);
             const prevContentList = categoryObj.filter((it) => parseInt(it.id) < parseInt(id));
             if(prevContentList.length > 0){
@@ -150,7 +165,7 @@ const Post = () => {
 
 
     const handleNextContent = useCallback(() => {
-        if(category === "document" || category === "report"){
+        if(category === "document" || category === "report" || category === "meeting"){
             const categoryObj = data.filter((it) => it.category === category);
             const nextContentList = categoryObj.filter((it) => parseInt(it.id) > parseInt(id));
             if(nextContentList.length > 0){
@@ -181,7 +196,7 @@ const Post = () => {
             document.getElementById("Modal").style.display = 'none';
             document.getElementById("submitType").value = "";
             return;
-        }else if(category === "document" || category === "report"){
+        }else if(category === "document" || category === "report" || category === "meeting"){
             const post = data.find((it) => parseInt(it.id) === parseInt(id));
             const postPwd = post.password;
             if(pwd === postPwd){
@@ -211,7 +226,6 @@ const Post = () => {
     const showModal = useCallback((type, e) => {
         document.getElementById("Modal").style.display = 'block';
         setSubmitType(type);
-        console.log(type)
     }, []);
 
 
@@ -259,8 +273,8 @@ const Post = () => {
                 <div className="content-img">
                     {src && <img src={src} alt="error" />}
                 </div>
-                    <div id="contentBody">
-                        {content}
+                    <div id="contentBody" dangerouslySetInnerHTML={{ __html: content}}>
+                        
                     </div>
                     <hr/>
                     <div className="post-footer-btn">
@@ -291,4 +305,4 @@ const Post = () => {
     
 }
 
-export default Post;
+export default React.memo(Post);

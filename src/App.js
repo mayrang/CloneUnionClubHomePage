@@ -23,6 +23,9 @@ const reducer = (state, action) => {
     case "REMOVE":
       newData = state.filter((it) => parseInt(it.id) !== parseInt(action.id));
       break;
+    case "EDIT":
+      newData = state.map((it) => parseInt(it.id) === parseInt(action.id) ? {...action.data} : it);
+      break;
     default:
       return state;
   }
@@ -66,8 +69,22 @@ function App() {
     dispatch({type: "REMOVE", id: targetId});
   }, []);
 
+  const onEdit = useCallback((targetId, title, content, category, pwd) => {
+
+    const newData = {
+      id: parseInt(targetId),
+      title,
+      content,
+      category,
+      date: new Date().getTime(),
+      password: pwd
+    };
+    dispatch({type: "EDIT", data: newData, id: targetId});
+
+  }, []);
+
   const memorizedDispatch = useMemo(() => {
-    return {onCreate, onRemove};
+    return {onCreate, onRemove, onEdit};
   }, [onCreate, onRemove]);
   return (
     <DataStateContext.Provider value={data}>

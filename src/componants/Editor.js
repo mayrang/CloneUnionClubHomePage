@@ -2,7 +2,7 @@ import React, { useState,useCallback, useRef, useEffect, useContext } from "reac
 import { useNavigate } from "react-router-dom";
 import { DataDispatchContext } from "../App";
 
-const Editor = () => {
+const Editor = ({isEdit, data}) => {
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("#")
@@ -11,7 +11,18 @@ const Editor = () => {
     const [imgFile, setImgFile] = useState(null);	//파일	
     const textRef = useRef(null);
     const categoryRef = useRef(null);
-    const {onCreate} = useContext(DataDispatchContext);
+    const {onCreate, onEdit} = useContext(DataDispatchContext);
+
+    useEffect(() => {
+        if(isEdit){
+            setTitle(data.title);
+            setCategory(data.category);
+            document.getElementById("editor").innerHTML = data.content;
+            setPwd(data.password);
+        }
+    }, [isEdit, data]);
+
+
 
     const handleChangeFile = (event) => {
         console.log(event.target.files)
@@ -71,7 +82,7 @@ const Editor = () => {
     const changeTitle = useCallback((e) => {
         setTitle(e.target.value);
     }, []);
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         console.log(imgFile)
         if(category === "#"){
             alert("카테고리를 설정해주세요");
@@ -79,12 +90,16 @@ const Editor = () => {
             
         }else{
             const content = document.getElementById("editor").innerHTML;
-
-            onCreate(title, content,category, pwd);
+            if(isEdit){
+                onEdit(data.id, title, content, category, pwd);
+            }else{
+                onCreate(title, content,category, pwd);
+            }
+            
             navigate("/", {replace: true});
         }
         
-    }
+    }, [data.id, title, category, pwd]);
     return (
         <div className="write-page">
             <div className="write-title">
@@ -105,6 +120,7 @@ const Editor = () => {
                 <option value="#">카테고리</option>
                 <option value="document">서류/양식</option>
                 <option value="report">동아리활동보고</option>
+                <option value="meeting">대표자 회의록</option>
                 </select>
                 {/* <select id="clubname" value={}>
                 <option>동아리명</option>
