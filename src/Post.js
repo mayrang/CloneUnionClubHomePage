@@ -15,6 +15,7 @@ const Post = () => {
     const [searchParams] = useSearchParams();
     const category = searchParams.get("category");
     const [title, setTitle] = useState();
+    const [submitType, setSubmitType] = useState("");
     const [src, setSrc] = useState();
     const [content, setContent] = useState();
     const [categoryName, setCategoryName] = useState();
@@ -174,19 +175,24 @@ const Post = () => {
         }
     }, [data]);
 
-    const submitRemove = useCallback(() => {
+    const handleSubmit = useCallback(() => {
         if(category === "physical" || category === "art" || category === "volunteer" || category === "performance" || category === "religion"){
-            alert("삭제 권한이 없습니다.");
+            alert("권한이 없습니다.");
             document.getElementById("Modal").style.display = 'none';
+            document.getElementById("submitType").value = "";
             return;
         }else if(category === "document" || category === "report"){
             const post = data.find((it) => parseInt(it.id) === parseInt(id));
-            console.log(post.password)
-            console.log(pwd)
             const postPwd = post.password;
             if(pwd === postPwd){
-                onRemove(id);
-                navigate(-1, {replace:true});
+                const submitType = document.getElementById("submitType").value;
+                if(submitType === "remove"){
+                    onRemove(id);
+                    navigate(-1, {replace:true});
+                }else{
+                    navigate(`/edit/${id}?category=${category}`);
+                }
+                
 
             }else{
                 alert("비밀번호 틀림");
@@ -199,17 +205,19 @@ const Post = () => {
 
     const closeModal = useCallback(() => {
         document.getElementById("Modal").style.display = 'none';
+        document.getElementById("submitType").value = "";
     }, []);
 
-    const showModal = useCallback(() => {
+    const showModal = useCallback((type, e) => {
         document.getElementById("Modal").style.display = 'block';
+        setSubmitType(type);
+        console.log(type)
     }, []);
 
 
     const onChangePwd = useCallback((e) => {
         setPwd(e.target.value);
     }, [])
-
 
 
 
@@ -224,7 +232,8 @@ const Post = () => {
 
                 <div className="modalContainer">
                     <input type="password" className="pwd" placeholder="Enter Password" name="pwd" onChange={onChangePwd} value={pwd} required />
-                <button className="modalButton" onClick={submitRemove}>Login</button>
+                    <input type="hidden" id="submitType" value={submitType} />
+                <button className="modalButton" onClick={handleSubmit}>Login</button>
                     </div>
                 </div>
             <Header />
@@ -239,10 +248,10 @@ const Post = () => {
                     <span>관리자</span>
                 </div>
                 <div id="contentButtons">
-                    <button id="contentEditButton" type="button">
-                        <FontAwesomeIcon icon={faEdit} />
+                    <button id="contentEditButton" type="button" onClick={(e) => {showModal("edit", e)}}>
+                        <FontAwesomeIcon icon={faEdit}  />
                     </button>
-                    <button id="contentDeleteButton" onClick={showModal}>
+                    <button id="contentDeleteButton" onClick={(e) => {showModal("remove", e)}}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </button>
                 </div>
