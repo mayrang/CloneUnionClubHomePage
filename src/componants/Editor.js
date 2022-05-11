@@ -75,7 +75,7 @@ const Editor = ({isEdit, data}) => {
         setCategory(e.target.value);
     }, []);
 
-    const chagngePwd = useCallback((e) => {
+    const changePwd = useCallback((e) => {
         setPwd(e.target.value);
     }, []);
 
@@ -127,7 +127,7 @@ const Editor = ({isEdit, data}) => {
                 </select>  */}
             </div>
             <div className="deletePwd">
-                <input className="back-color" id="deletepwd" type="password" placeholder="비밀번호를 입력하시오" value={pwd} onChange={chagngePwd}/>
+                <input className="back-color" id="deletepwd" type="password" placeholder="비밀번호를 입력하시오" value={pwd} onChange={changePwd}/>
             </div>
 
 
