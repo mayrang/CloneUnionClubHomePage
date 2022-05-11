@@ -99,7 +99,7 @@ const Editor = ({isEdit, data}) => {
             navigate("/", {replace: true});
         }
         
-    }, [data.id, title, category, pwd]);
+    }, [ title, category, pwd]);
     return (
         <div className="write-page">
             <div className="write-title">
